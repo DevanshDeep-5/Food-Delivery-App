@@ -31,7 +31,7 @@ try {
     if(cartData[req.body.itemId]>0){
 cartData[req.body.itemId] -= 1
     }
-    await userModel.findByIdAndUpdate(req.body.useId, {cartData})
+    await userModel.findByIdAndUpdate(req.body.userId, {cartData})
     res.json({success:true,message:"Removed From Cart"})
 } catch (error) {
     console.log(error);

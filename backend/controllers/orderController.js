@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 // placing user order for frontend 
 const placeOrder = async (req,res)=>{
 
-const frontend_url = "https://localhost:5173"
+const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173"
 
 try {
     const newOrder = new orderModel({
@@ -57,4 +57,32 @@ try {
 }
 }
 
-export {placeOrder}
+// verify order payment
+const verifyOrder = async (req,res)=>{
+    const {orderId, success} = req.body
+    try {
+        if(success === "true" || success === true){
+            await orderModel.findByIdAndUpdate(orderId, {payment:true})
+            res.json({success:true, message:"Paid"})
+        } else {
+            await orderModel.findByIdAndDelete(orderId)
+            res.json({success:false, message:"Not Paid"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({success:false, message:"ERROR"})
+    }
+}
+
+// get user orders for frontend
+const userOrders = async (req,res)=>{
+    try {
+        const orders = await orderModel.find({userId:req.body.userId})
+        res.json({success:true, data:orders})
+    } catch (error) {
+        console.log(error);
+        res.json({success:false, message:"ERROR"})
+    }
+}
+
+export {placeOrder, verifyOrder, userOrders}
