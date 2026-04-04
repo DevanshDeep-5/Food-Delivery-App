@@ -143,12 +143,6 @@ Open **three terminal windows** and run each part:
 
 ---
 
-## 📸 Screenshots
-
-> Add screenshots of your app here.
-
----
-
 ## 📝 License
 
 This project is open-source and available under the [ISC License](LICENSE).
